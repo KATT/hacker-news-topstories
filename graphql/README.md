@@ -2,4 +2,4 @@
 
 ## Demo
 
-https://hacker-news-topstories-nextjs.now.sh/graphiql
+https://hacker-news-topstories-graphql.now.sh/graphiql
