@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "GRAPHQL_URI='http://localhost:3020/graphql' next",
     "build": "GRAPHQL_URI='https://hacker-news-topstories-graphql.now.sh/graphql' next build",
-    "start": "GRAPHQL_URI='https://hacker-news-topstories-graphql.now.sh/graphql' next start"
+    "start": "GRAPHQL_URI='https://hacker-news-topstories-graphql.now.sh/graphql' next start",
+    "lint": "standard"
   },
   "dependencies": {
     "graphql": "^0.9.3",
@@ -12,9 +13,16 @@
     "next": "latest",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-apollo": "^1.1.3"
+    "react-apollo": "^1.1.3",
+    "react-dom": "^15.5.4"
+  },
+  "standard": {
+    "parser": "babel-eslint"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "standard": "^10.0.2"
+  }
 }

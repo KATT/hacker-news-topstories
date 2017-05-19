@@ -6,6 +6,7 @@ import initApollo from './initApollo'
 export default ComposedComponent => {
   return class WithData extends React.Component {
     static displayName = `WithData(${ComposedComponent.displayName})`
+
     static propTypes = {
       serverState: PropTypes.object.isRequired
     }

@@ -1,9 +1,6 @@
 import { gql, graphql } from 'react-apollo'
 
-
-const POSTS_PER_PAGE = 10
-
-function PostListItemDetails ({ data: { hackerNewsStory, loading }, }) {
+function PostListItemDetails ({ data: { hackerNewsStory, loading } }) {
   if (!hackerNewsStory || loading) {
     return <div>Loading..</div>
   }
@@ -14,13 +11,13 @@ function PostListItemDetails ({ data: { hackerNewsStory, loading }, }) {
     time,
     by: {
       id: byId,
-      karma,
-    },
-  } = hackerNewsStory;
+      karma
+    }
+  } = hackerNewsStory
 
   return (
     <ul>
-      <li><strong>time:</strong> {new Date(time*1000).toString()}</li>
+      <li><strong>time:</strong> {new Date(time * 1000).toString()}</li>
       <li><strong>url:</strong> {url ? <a href={url}>{url}</a> : 'n/a'}</li>
       <li><strong>score:</strong> {score}</li>
       <li><strong>author:</strong> {byId}</li>
@@ -51,6 +48,6 @@ export default graphql(hackerNewsStory, {
   options: ({ post }) => ({ variables: { id: post.id } }),
   skip: props => !props.isExpanded,
   props: ({ data }) => ({
-    data,
+    data
   })
 })(PostListItemDetails)

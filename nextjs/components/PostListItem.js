@@ -1,23 +1,21 @@
 import Link from 'next/link'
-import PostListItemDetails from './PostListItemDetails';
+import PostListItemDetails from './PostListItemDetails'
 
-const POSTS_PER_PAGE = 10
-
-function toggleItem(arr, id) {
-  const index = arr.indexOf(id);
+function toggleItem (arr, id) {
+  const index = arr.indexOf(id)
 
   if (index === -1) {
-    return [...arr, id];
+    return [...arr, id]
   }
 
-  return arr.filter(idx => id !== idx);
+  return arr.filter(idx => id !== idx)
 }
 
 function PostListItem ({ post, expanded }) {
   const isExpanded = expanded.includes(post.id)
   const nextArr = toggleItem(expanded, post.id)
 
-  const href = nextArr.length ? `?expand=${nextArr.join(',')}` : './';
+  const href = nextArr.length ? `?expand=${nextArr.join(',')}` : './'
   return (
     <div>
       <Link href={href} scroll={false}>
@@ -30,4 +28,4 @@ function PostListItem ({ post, expanded }) {
   )
 }
 
-export default PostListItem;
+export default PostListItem

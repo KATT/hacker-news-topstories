@@ -1,11 +1,11 @@
-const webpack = require('webpack');
+const webpack = require('webpack')
 
 module.exports = {
-  webpack(cfg) {
+  webpack (cfg) {
     cfg.plugins.push(new webpack.DefinePlugin({
-      'process.env.GRAPHQL_URI': JSON.stringify(process.env.GRAPHQL_URI),
-    }));
+      'process.env.GRAPHQL_URI': JSON.stringify(process.env.GRAPHQL_URI)
+    }))
 
-    return cfg;
-  },
-};
+    return cfg
+  }
+}

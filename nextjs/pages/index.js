@@ -4,7 +4,7 @@ import PostList from '../components/PostList'
 import withData from '../lib/withData'
 
 export default withData(props => {
-  const expanded = (props.url.query.expand || '').split(',').filter(id => id).map(Number);
+  const expanded = (props.url.query.expand || '').split(',').filter(id => id).map(Number)
 
   return (
     <App>

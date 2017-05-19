@@ -1,5 +1,5 @@
 import { gql, graphql } from 'react-apollo'
-import PostListItem from './PostListItem';
+import PostListItem from './PostListItem'
 
 const POSTS_PER_PAGE = 10
 
@@ -76,6 +76,6 @@ export default graphql(hackerNewsTopStories, {
     }
   },
   props: ({ data }) => ({
-    data,
+    data
   })
 })(PostList)
