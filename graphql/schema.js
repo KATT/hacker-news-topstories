@@ -1,9 +1,12 @@
+import { merge } from 'lodash';
 import { makeExecutableSchema } from 'graphql-tools';
+import { schema as hackerNewsSchema, resolvers as hackerNewsResolvers } from './hackernews/schema';
 
-const typeDefs = [`
+const rootSchema = [`
   type Query {
     hello: String
     ping(message: String!): String
+    hackerNewsTopStories(sort: HackerNewsTopStoriesSort limit:Int offset:Int): [HackerNewsStory]!
   }
 
   # type Mutation {
@@ -19,7 +22,7 @@ const typeDefs = [`
   }
 `];
 
-const resolvers = {
+const rootResolvers = {
   Query: {
     hello(root, args, context) {
       return "Hello world!";
@@ -33,6 +36,9 @@ const resolvers = {
   // Subscription: {
   // },
 };
+
+const typeDefs = [...rootSchema, ...hackerNewsSchema];
+const resolvers = merge(rootResolvers, hackerNewsResolvers);
 
 const jsSchema = makeExecutableSchema({
   typeDefs,
