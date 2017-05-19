@@ -66,6 +66,9 @@ export const resolvers = {
       }
 
       return ids.map(id => storyResolver(context, id));
+    },
+    async hackerNewsStory(root, {id}, context) {
+      return storyResolver(context, id);
     }
   }
 };

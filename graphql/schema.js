@@ -7,6 +7,7 @@ const rootSchema = [`
     hello: String
     ping(message: String!): String
     hackerNewsTopStories(sort: HackerNewsTopStoriesSort limit:Int first:Int): [HackerNewsStory]!
+    hackerNewsStory(id:Int!): HackerNewsStory
   }
 
   # type Mutation {
