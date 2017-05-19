@@ -6,7 +6,7 @@ const rootSchema = [`
   type Query {
     hello: String
     ping(message: String!): String
-    hackerNewsTopStories(sort: HackerNewsTopStoriesSort limit:Int first:Int): [HackerNewsStory]!
+    hackerNewsTopStories(sort: HackerNewsTopStoriesSort first:Int offset: Int): [HackerNewsStory]!
     hackerNewsStory(id:Int!): HackerNewsStory
   }
 

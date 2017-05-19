@@ -54,7 +54,7 @@ const storyResolver = (context, id) => ({
 export const resolvers = {
   Query: {
     async hackerNewsTopStories(root, args, context) {
-      const {sort, first, offset} = args;
+      const {sort, first, offset = 0} = args;
 
       let ids = await context.HackerNewsStories.getTopStoriesIds();
 
@@ -62,7 +62,7 @@ export const resolvers = {
         ids = _.shuffle(ids);
       }
       if (first) {
-        ids = _.slice(ids, 0, first);
+        ids = _.slice(ids, offset, first);
       }
 
       return ids.map(id => storyResolver(context, id));
