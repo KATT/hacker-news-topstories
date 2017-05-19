@@ -5,7 +5,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "standard"
+    "lint": "standard --fix"
   },
   "dependencies": {
     "graphql": "^0.9.3",

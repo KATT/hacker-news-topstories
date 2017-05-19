@@ -1,6 +1,6 @@
-import { merge } from 'lodash';
-import { makeExecutableSchema } from 'graphql-tools';
-import { schema as hackerNewsSchema, resolvers as hackerNewsResolvers } from './hackernews/schema';
+import { merge } from 'lodash'
+import { makeExecutableSchema } from 'graphql-tools'
+import { schema as hackerNewsSchema, resolvers as hackerNewsResolvers } from './hackernews/schema'
 
 const rootSchema = [`
   type Query {
@@ -21,29 +21,29 @@ const rootSchema = [`
     # mutation: Mutation
     # subscription: Subscription
   }
-`];
+`]
 
 const rootResolvers = {
   Query: {
-    hello(root, args, context) {
-      return "Hello world!";
+    hello (root, args, context) {
+      return 'Hello world!'
     },
-    ping(root, { message }, context) {
-      return `Answering ${message}`;
-    },
-  },
+    ping (root, { message }, context) {
+      return `Answering ${message}`
+    }
+  }
   // Mutation: {
   // },
   // Subscription: {
   // },
-};
+}
 
-const typeDefs = [...rootSchema, ...hackerNewsSchema];
-const resolvers = merge(rootResolvers, hackerNewsResolvers);
+const typeDefs = [...rootSchema, ...hackerNewsSchema]
+const resolvers = merge(rootResolvers, hackerNewsResolvers)
 
 const jsSchema = makeExecutableSchema({
   typeDefs,
-  resolvers,
-});
+  resolvers
+})
 
-export default jsSchema;
+export default jsSchema

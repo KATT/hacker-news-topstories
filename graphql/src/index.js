@@ -1,3 +1,3 @@
-import { run } from './server';
+import { run } from './server'
 
-run(process.env);
+run(process.env)
