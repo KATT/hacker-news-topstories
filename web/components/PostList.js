@@ -1,8 +1,9 @@
 import { gql, graphql } from 'react-apollo'
+import PostListItem from './PostListItem';
 
 const POSTS_PER_PAGE = 10
 
-function PostList ({ data: { hackerNewsTopStories, loading, _hackerNewsTopStoriesMeta }, loadMorePosts }) {
+function PostList ({ data: { hackerNewsTopStories, loading, _hackerNewsTopStoriesMeta }, expanded }) {
   if (!hackerNewsTopStories || !hackerNewsTopStories.length) {
     return <div>Loading..</div>
   }
@@ -11,12 +12,7 @@ function PostList ({ data: { hackerNewsTopStories, loading, _hackerNewsTopStorie
     <section>
       <ul>
         {hackerNewsTopStories.map((post, index) =>
-          <li key={post.id}>
-            <div>
-              <span>{index + 1}. </span>
-              <a href={post.url}>{post.title}</a>
-            </div>
-          </li>
+          <PostListItem key={post.id} post={post} expanded={expanded} />
         )}
       </ul>
       <style jsx>{`
@@ -66,7 +62,6 @@ const hackerNewsTopStories = gql`
     hackerNewsTopStories(first: $first) {
       id
       title
-      url
       score
     }
   }
