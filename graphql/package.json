@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "nodemon index.js --exec babel-node --presets es2015,stage-0"
+    "dev": "nodemon index.js --exec babel-node"
   },
   "author": "",
   "license": "ISC",
