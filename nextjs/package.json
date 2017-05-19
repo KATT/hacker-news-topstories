@@ -2,9 +2,9 @@
   "name": "hacker-news-topstories-nextjs",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
+    "dev": "GRAPHQL_URI='http://localhost:3020/graphql' next",
+    "build": "GRAPHQL_URI='https://hacker-news-topstories-graphql.now.sh/graphql' next build",
+    "start": "GRAPHQL_URI='https://hacker-news-topstories-graphql.now.sh/graphql' next start"
   },
   "dependencies": {
     "graphql": "^0.9.3",
