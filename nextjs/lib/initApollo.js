@@ -1,3 +1,5 @@
+/* global GRAPHQL_URI */
+
 import { ApolloClient, createNetworkInterface } from 'react-apollo'
 import fetch from 'isomorphic-fetch'
 
@@ -13,7 +15,7 @@ function create (initialState) {
     initialState,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     networkInterface: createNetworkInterface({
-      uri: process.env.GRAPHQL_URI, // Server URL (must be absolute)
+      uri: GRAPHQL_URI, // Server URL (must be absolute)
       opts: { // Additional fetch() options like `credentials` or `headers`
         credentials: 'same-origin'
       }

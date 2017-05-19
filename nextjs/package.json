@@ -2,9 +2,9 @@
   "name": "hacker-news-topstories-nextjs",
   "version": "1.0.0",
   "scripts": {
-    "dev": "GRAPHQL_URI='http://localhost:3020/graphql' next",
-    "build": "GRAPHQL_URI='https://hacker-news-topstories-graphql.now.sh/graphql' next build",
-    "start": "GRAPHQL_URI='https://hacker-news-topstories-graphql.now.sh/graphql' next start",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
     "lint": "standard"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
   "license": "ISC",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-define": "^1.2.0",
     "standard": "^10.0.2"
   }
 }
