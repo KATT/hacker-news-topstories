@@ -4,7 +4,7 @@ export const schema = [`
 type HackerNewsStory {
   id: Int!
   title: String!
-  url: String!
+  url: String
   score: Int!
   time: Int!
   by: HackerNewsUser!
