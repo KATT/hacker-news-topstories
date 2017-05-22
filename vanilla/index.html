@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>HackerNews Random 10</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="HackerNews Random Top 10">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css">
+    <style>
+    .hn-spinner-wrapper {
+      text-align:center;
+      padding: 50px;
+    }
+
+    .hn-refresh {
+      position: absolute;
+      right: 20px;
+    }
+
+    .mdl-list__item-secondary-content {
+      white-space: nowrap;
+    }
+    </style>
+  </head>
+  <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+        <div class="mdl-layout__header-row">
+          <h1 class="mdl-layout-title">HackerNews Random 10</h1>
+
+          <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored mdl-js-ripple-effect hn-refresh">
+            <i class="material-icons">autorenew</i>
+          </button>
+        </div>
+      </header>
+      <main id="content" class="mdl-layout__content"></main>
+    </div>
+
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+
+    <template id="tpl-content">
+      <ul class="mdl-list">
+      </ul>
+    </template>
+
+    <template id="tpl-content-item">
+      <li class="mdl-list__item mdl-list__item--three-line">
+        <span class="mdl-list__item-primary-content">
+          <span class="hn-list__item-title">Bryan Cranston</span>
+          <span class="mdl-list__item-text-body">
+            Bryan Cranston played the role of Walter in Breaking Bad. He is also known
+            for playing Hal in Malcom in the Middle.
+          </span>
+        </span>
+        <span class="mdl-list__item-secondary-content">
+          <a class="mdl-list__item-secondary-action" target="_blank" href="#"><i class="material-icons">open_in_new</i></a>
+          <span class="mdl-list__item-secondary-info">user - x karma</span>
+        </span>
+      </li>
+    </template>
+
+    <script>
+      const App = (function() {
+        const HACKERNEWS_API_ROOT = 'https://hacker-news.firebaseio.com'
+        const NUMBER_OF_STORIES = 10
+
+        function fetchJSON(url) {
+          return fetch(url).then(response => response.json())
+        }
+
+        function fetchTopStories() {
+          return fetchJSON(`${HACKERNEWS_API_ROOT}/v0/topstories.json`)
+        }
+        function fetchStoryById(id) {
+          return fetchJSON(`${HACKERNEWS_API_ROOT}/v0/item/${id}.json`)
+        }
+        function fetchUserById (id) {
+          return fetchJSON(`${HACKERNEWS_API_ROOT}/v0/user/${id}.json`)
+        }
+
+        function fetchStoryAndUser(id) {
+          return new Promise((resolve, reject) => {
+            let result = {}
+
+            fetchStoryById(id)
+              .then(story => {
+                result.story = story;
+
+                return fetchUserById(story.by)
+              })
+              .then(user => {
+                result.user = user
+
+                return result
+              })
+              .then(resolve)
+              .catch(reject)
+          })
+        }
+
+        function sortStoriesAndUsers(items) {
+          return items.sort((a, b) => a.story.score < b.story.score)
+        }
+
+        function renderLoading() {
+          const $content = document.getElementById('content')
+
+          const spinnerHTML = `<div class="mdl-spinner mdl-js-spinner is-active"></div>`
+          const spinnerWrapperHTML = `<div class="hn-spinner-wrapper">${spinnerHTML}</div>`
+
+          $content.innerHTML = spinnerWrapperHTML
+
+          componentHandler.upgradeElements($content);
+        }
+
+        function renderSomethingWentWrong(err) {
+          console.error('Something went wrong.', err)
+
+          const $content = document.getElementById('content')
+
+          $content.innerHTML = 'Something went wrong. Check the logs.'
+        }
+
+        function renderApp(items) {
+          const contentTemplate = document.querySelector('#tpl-content')
+          const contentNode = document.importNode(contentTemplate.content, true)
+
+          const itemTemplate = document.querySelector('#tpl-content-item')
+          items.forEach(item => {
+            const {story, user} = item
+
+            const added = new Date(story.time * 1000).toString()
+
+            itemTemplate.content.querySelector('.hn-list__item-title').innerText = story.title
+            itemTemplate.content.querySelector('.mdl-list__item-text-body').innerText = `${story.score}p. Added ${added}. ${story.text || ''}`
+            itemTemplate.content.querySelector('.mdl-list__item-secondary-info').innerText = `by ${user.id} - ${user.karma} karma`
+            itemTemplate.content.querySelector('.mdl-list__item-secondary-action').href = story.url
+
+
+            const itemNode = document.importNode(itemTemplate.content, true)
+
+            contentNode.appendChild(itemNode)
+          })
+
+
+
+          const $content = document.getElementById('content')
+          $content.innerHTML = ''
+          $content.appendChild(contentNode)
+
+          componentHandler.upgradeElements($content);
+        }
+
+        function getRandomItemsFromArray(arr, n) {
+          const arrCopy = [...arr]
+
+          const randomItems = []
+
+          for (let i=0; i<n; i++) {
+            const randomIndex = Math.floor(Math.random() * arrCopy.length)
+
+            randomItems.push(arrCopy[randomIndex])
+
+            arrCopy.splice(randomIndex, 1)
+          }
+
+          return randomItems
+        }
+
+        function enableRefresh() {
+          document.querySelector('.hn-refresh').disabled = false
+
+        }
+
+        function disableRefresh() {
+          document.querySelector('.hn-refresh').disabled = true
+        }
+
+        function refresh() {
+          renderLoading()
+          disableRefresh()
+
+          fetchTopStories()
+            .then(storyIds => {
+              const randomIds = getRandomItemsFromArray(storyIds, NUMBER_OF_STORIES)
+
+              return Promise.all(randomIds.map(fetchStoryAndUser))
+            })
+            .then(sortStoriesAndUsers)
+            .then(renderApp)
+            .catch(renderSomethingWentWrong)
+            .then(enableRefresh)
+        }
+
+        function init() {
+          document.querySelector('.hn-refresh').addEventListener('click', refresh)
+          refresh()
+        }
+
+        return {init}
+      }())
+
+
+
+      window.addEventListener('DOMContentLoaded', App.init)
+    </script>
+  </body>
+</html>
